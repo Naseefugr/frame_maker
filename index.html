@@ -11,7 +11,7 @@
             --text-dark: #1B1B1B;
             --border-radius: 12px;
             --shadow: 0 4px 20px rgba(0,0,0,0.1);
-            --sidebar-width: 400px;
+            --sidebar-width: 350px; /* Smaller sidebar since we have fewer controls */
         }
 
         * {
@@ -50,7 +50,6 @@
             font-size: 0.8rem;
         }
 
-        /* Security Warning Banner */
         .security-warning {
             background-color: #fff3cd;
             color: #856404;
@@ -58,7 +57,7 @@
             padding: 10px;
             text-align: center;
             font-size: 0.85rem;
-            display: none; /* Hidden by default */
+            display: none;
         }
 
         main {
@@ -93,7 +92,7 @@
         .control-section {
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 1rem;
+            padding: 1.2rem;
             background: #fafafa;
         }
 
@@ -120,14 +119,12 @@
             font-size: 0.85rem;
         }
 
-        textarea {
+        input[type="text"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 0.95rem;
-            resize: vertical;
-            min-height: 60px;
         }
 
         input[type="color"] {
@@ -143,7 +140,7 @@
         .file-upload-wrapper {
             position: relative;
             width: 100%;
-            height: 80px;
+            height: 90px;
             border: 2px dashed #ccc;
             border-radius: 6px;
             display: flex;
@@ -183,7 +180,7 @@
         }
         
         .slider-group label {
-            width: 90px;
+            width: 60px;
             margin-bottom: 0;
             font-weight: normal;
             font-size: 0.8rem;
@@ -198,17 +195,17 @@
         .btn {
             display: block;
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
             border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
             transition: background 0.3s;
             text-align: center;
             background-color: var(--primary-color);
             color: white;
-            margin-top: auto;
+            margin-top: auto; /* Push to bottom */
         }
 
         .btn:hover {
@@ -242,82 +239,40 @@
 <body>
 
 <div class="security-warning" id="securityWarning">
-    <strong>Notice:</strong> You are running this file directly. The "Download" button may be blocked by your browser. 
-    Please use a Local Server (e.g., VS Code Live Server) to enable downloading.
+    <strong>Notice:</strong> For the Download button to work, please run this file on a Local Server (e.g., VS Code Live Server).
 </div>
 
 <header>
     <h1>Frame Maker</h1>
-    <p class="subtitle">Loading frame from: img/frame.png</p>
+    <p class="subtitle">Simple Automatic Layout</p>
 </header>
 
 <main>
-    <!-- LEFT: EDITOR -->
+    <!-- LEFT: SIMPLIFIED EDITOR -->
     <section class="editor-panel">
         
-        <!-- 1. Text Controls -->
+        <!-- 1. Text Settings -->
         <div class="control-section">
-            <div class="section-title">1. Name & Text</div>
+            <div class="section-title">1. Your Name</div>
             <div class="form-group">
-                <label for="nameInput">Your Text</label>
-                <textarea id="nameInput" placeholder="Type your name here...&#10;Press Enter for new line."></textarea>
+                <label>Enter Name</label>
+                <input type="text" id="nameInput" placeholder="e.g. Muhammad Naseef" maxlength="25">
             </div>
             
             <div class="form-group">
-                <label for="colorInput">Text Color</label>
-                <input type="color" id="colorInput" value="#000000">
+                <label>Text Color</label>
+                <input type="color" id="colorInput" value="#2E7D32"> <!-- Default Green -->
             </div>
 
             <div class="form-group">
                 <label>Text Size</label>
-                <input type="range" id="textSizeRange" min="0.5" max="3" step="0.1" value="1">
-            </div>
-
-            <div class="form-group">
-                <label>Text Position (X / Y)</label>
-                <div class="slider-group">
-                    <label>Horizontal</label>
-                    <input type="range" id="textXRange" min="0" max="1000" value="400">
-                </div>
-                <div class="slider-group">
-                    <label>Vertical</label>
-                    <input type="range" id="textYRange" min="0" max="1500" value="350">
-                </div>
+                <input type="range" id="textSizeRange" min="0.5" max="2" step="0.1" value="1">
             </div>
         </div>
 
-        <!-- 2. Photo Box Controls -->
+        <!-- 2. Photo Settings -->
         <div class="control-section">
-            <div class="section-title">2. Photo Box Settings</div>
-            
-            <div class="form-group">
-                <label>Position</label>
-                <div class="slider-group">
-                    <label>Left/Right</label>
-                    <input type="range" id="rectXRange" min="-300" max="300" value="0">
-                </div>
-                <div class="slider-group">
-                    <label>Up/Down</label>
-                    <input type="range" id="rectYRange" min="-300" max="300" value="0">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Size</label>
-                <div class="slider-group">
-                    <label>Width</label>
-                    <input type="range" id="rectWRange" min="-100" max="200" value="0">
-                </div>
-                <div class="slider-group">
-                    <label>Height</label>
-                    <input type="range" id="rectHRange" min="-100" max="200" value="0">
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. Image Content Controls -->
-        <div class="control-section">
-            <div class="section-title">3. Photo Upload & Fit</div>
+            <div class="section-title">2. Your Photo</div>
             <div class="form-group">
                 <div class="file-upload-wrapper">
                     <input type="file" id="imageUpload" accept="image/*">
@@ -326,19 +281,8 @@
             </div>
             
             <div class="form-group">
-                <label>Zoom Photo Inside Box</label>
+                <label>Zoom Photo (Fit to Frame)</label>
                 <input type="range" id="zoomRange" min="0.1" max="5" step="0.1" value="1">
-            </div>
-            <div class="form-group">
-                <label>Move Photo Inside Box</label>
-                <div class="slider-group">
-                    <label>Pan X</label>
-                    <input type="range" id="panXRange" min="-400" max="400" step="5" value="0">
-                </div>
-                <div class="slider-group">
-                    <label>Pan Y</label>
-                    <input type="range" id="panYRange" min="-400" max="400" step="5" value="0">
-                </div>
             </div>
         </div>
 
@@ -354,43 +298,39 @@
 </main>
 
 <script>
-    // Configuration
+    // Configuration: AUTOMATIC LAYOUT
     const CONFIG = {
-        // This is the FIXED path to your local image
         frameUrl: './img/frame.png',
         baseWidth: 800, 
         baseHeight: 1000,
+        
+        // Photo Box: FIXED on the LEFT
         photoArea: {
-            x: 50,   
-            y: 280,  
-            width: 320, 
-            height: 320 
+            x: 110,   // Left margin
+            y: 350,  // Top margin (where the Instagram box is)
+            width: 280, 
+            height: 290 
         },
+        
+        // Text Area: FIXED on the RIGHT
+        // Calculated to be to the right of the photo
         textArea: {
-            fontSize: 36,
+            // X = Photo X + Photo Width + Margin
+            offsetX: 455, 
+            offsetY: 508, // Aligned with top of photo
+            fontSize: 35,
             fontFamily: 'Arial, sans-serif',
-            defaultColor: '#000000',
-            defaultX: 400,
-            defaultY: 350
+            defaultColor: '#2E7D32' // Green
         }
     };
 
-    // State
     const state = {
         frameImg: null,
         userImg: null,
         userName: '',
-        textColor: '#000000',
+        textColor: CONFIG.textArea.defaultColor,
         textSize: 1,
-        textX: 400,
-        textY: 350,
-        rectOffsetX: 0,
-        rectOffsetY: 0,
-        rectOffsetWidth: 0,
-        rectOffsetHeight: 0,
         zoom: 1,
-        panX: 0,
-        panY: 0,
         scaleX: 1,
         scaleY: 1,
         isLocalFile: window.location.protocol === 'file:'
@@ -402,32 +342,19 @@
     const placeholderText = document.getElementById('placeholderText');
     const securityWarning = document.getElementById('securityWarning');
     
+    // Inputs
     const nameInput = document.getElementById('nameInput');
     const colorInput = document.getElementById('colorInput');
     const textSizeRange = document.getElementById('textSizeRange');
-    const textXRange = document.getElementById('textXRange');
-    const textYRange = document.getElementById('textYRange');
-    
-    const rectXRange = document.getElementById('rectXRange');
-    const rectYRange = document.getElementById('rectYRange');
-    const rectWRange = document.getElementById('rectWRange');
-    const rectHRange = document.getElementById('rectHRange');
     
     const imageUpload = document.getElementById('imageUpload');
     const uploadLabel = document.getElementById('uploadLabel');
     const zoomRange = document.getElementById('zoomRange');
-    const panXRange = document.getElementById('panXRange');
-    const panYRange = document.getElementById('panYRange');
     
     const downloadBtn = document.getElementById('downloadBtn');
 
-    // Initialization
     function init() {
-        // Show warning if running from file
-        if (state.isLocalFile) {
-            securityWarning.style.display = 'block';
-        }
-
+        if (state.isLocalFile) securityWarning.style.display = 'block';
         loadFrame();
     }
 
@@ -436,13 +363,7 @@
         placeholderText.innerText = "Loading img/frame.png...";
         
         const frame = new Image();
-        
-        // ONLY set crossOrigin if NOT on local file.
-        // If on local file, crossOrigin will break the loading, but download will fail anyway (browser rule).
-        if (!state.isLocalFile) {
-            frame.crossOrigin = "Anonymous";
-        }
-        
+        if (!state.isLocalFile) frame.crossOrigin = "Anonymous";
         frame.src = CONFIG.frameUrl;
         
         frame.onload = () => {
@@ -452,42 +373,31 @@
             state.scaleX = frame.width / CONFIG.baseWidth;
             state.scaleY = frame.height / CONFIG.baseHeight;
 
-            textXRange.max = frame.width;
-            textYRange.max = frame.height;
-            
-            textXRange.value = CONFIG.textArea.defaultX * state.scaleX;
-            textYRange.value = CONFIG.textArea.defaultY * state.scaleY;
-            state.textX = textXRange.value;
-            state.textY = textYRange.value;
-
             placeholderText.style.display = 'none';
             loadDefaultUserImage();
         };
 
         frame.onerror = () => {
-            placeholderText.innerText = "Error: Could not find 'img/frame.png'.\nCheck your folder structure.";
+            placeholderText.innerText = "Error: Could not find 'img/frame.png'.";
             placeholderText.style.color = "red";
         };
     }
 
     function loadDefaultUserImage() {
         const img = new Image();
-        // Placeholder needs crossOrigin
         img.crossOrigin = "Anonymous";
-        img.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8sbH-eax-Z_6uNPmkuRX7WRWcAtn7s4WlLw&s';
+        img.src = 'https://picsum.photos/seed/eid/400/400.jpg';
         img.onload = () => {
             state.userImg = img;
             calculateAutoCover(img);
             draw();
         };
-        img.onerror = () => {
-            draw(); // Draw frame even if placeholder fails
-        }
+        img.onerror = () => { draw(); }
     }
 
     function calculateAutoCover(img) {
-        const boxW = (CONFIG.photoArea.width + state.rectOffsetWidth) * state.scaleX;
-        const boxH = (CONFIG.photoArea.height + state.rectOffsetHeight) * state.scaleY;
+        const boxW = CONFIG.photoArea.width * state.scaleX;
+        const boxH = CONFIG.photoArea.height * state.scaleY;
         const imgW = img.width;
         const imgH = img.height;
 
@@ -495,7 +405,6 @@
         const imgRatio = imgW / imgH;
 
         let newZoom = 1;
-
         if (imgRatio > boxRatio) {
             newZoom = boxH / imgH;
         } else {
@@ -504,10 +413,7 @@
 
         state.zoom = newZoom;
         zoomRange.value = newZoom;
-        state.panX = 0;
-        state.panY = 0;
-        panXRange.value = 0;
-        panYRange.value = 0;
+        draw();
     }
 
     function draw() {
@@ -515,16 +421,15 @@
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // 1. Draw Frame
+        // 1. Draw Frame Background
         ctx.drawImage(state.frameImg, 0, 0, canvas.width, canvas.height);
 
-        // 2. Calculate Rectangle
-        const rectX = (CONFIG.photoArea.x + state.rectOffsetX) * state.scaleX;
-        const rectY = (CONFIG.photoArea.y + state.rectOffsetY) * state.scaleY;
-        const rectW = (CONFIG.photoArea.width + state.rectOffsetWidth) * state.scaleX;
-        const rectH = (CONFIG.photoArea.height + state.rectOffsetHeight) * state.scaleY;
+        // 2. Draw User Photo (FIXED Position on Left)
+        const rectX = CONFIG.photoArea.x * state.scaleX;
+        const rectY = CONFIG.photoArea.y * state.scaleY;
+        const rectW = CONFIG.photoArea.width * state.scaleX;
+        const rectH = CONFIG.photoArea.height * state.scaleY;
 
-        // 3. Draw User Photo
         if (state.userImg) {
             ctx.save();
             ctx.beginPath();
@@ -543,15 +448,20 @@
             const centerX = rectX + (rectW / 2);
             const centerY = rectY + (rectH / 2);
             
-            const drawX = centerX - (drawW / 2) + state.panX;
-            const drawY = centerY - (drawH / 2) + state.panY;
+            // Center drawing
+            const drawX = centerX - (drawW / 2);
+            const drawY = centerY - (drawH / 2);
 
             ctx.drawImage(state.userImg, drawX, drawY, drawW, drawH);
             ctx.restore();
         }
 
-        // 4. Draw Text
+        // 3. Draw Text (FIXED Position on Right)
         if (state.userName) {
+            // Calculate position relative to the scaled image size
+            const textX = CONFIG.textArea.offsetX * state.scaleX;
+            const textY = CONFIG.textArea.offsetY * state.scaleY;
+            
             const baseFontSize = CONFIG.textArea.fontSize * state.scaleX;
             const currentFontSize = baseFontSize * state.textSize;
             
@@ -561,12 +471,14 @@
             ctx.textAlign = 'left';
             ctx.textBaseline = 'top';
             
-            ctx.shadowColor = "rgba(255,255,255,0.7)";
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 2 * state.scaleX;
-            ctx.shadowOffsetY = 2 * state.scaleX;
-
-            wrapText(ctx, state.userName, state.textX, state.textY, 400 * state.scaleX, currentFontSize * 1.2);
+            // Add a white outline for better readability over complex backgrounds
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 4;
+            ctx.strokeText(state.userName, textX, textY);
+            
+            // Draw actual text
+            ctx.fillText(state.userName, textX, textY);
+            
             ctx.restore();
         }
     }
@@ -583,43 +495,12 @@
         ctx.closePath();
     }
 
-    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-        const paragraphs = text.split('\n');
-        let currentY = y;
-        paragraphs.forEach(paragraph => {
-            const words = paragraph.split(' ');
-            let line = '';
-            for(let n = 0; n < words.length; n++) {
-                const testLine = line + words[n] + ' ';
-                const metrics = ctx.measureText(testLine);
-                const testWidth = metrics.width;
-                if (testWidth > maxWidth && n > 0) {
-                    ctx.fillText(line, x, currentY);
-                    line = words[n] + ' ';
-                    currentY += lineHeight;
-                } else {
-                    line = testLine;
-                }
-            }
-            ctx.fillText(line, x, currentY);
-            currentY += lineHeight;
-        });
-    }
-
-    // Event Listeners - Text
+    // Events - Text
     nameInput.addEventListener('input', (e) => { state.userName = e.target.value; draw(); });
     colorInput.addEventListener('input', (e) => { state.textColor = e.target.value; draw(); });
     textSizeRange.addEventListener('input', (e) => { state.textSize = parseFloat(e.target.value); draw(); });
-    textXRange.addEventListener('input', (e) => { state.textX = parseInt(e.target.value); draw(); });
-    textYRange.addEventListener('input', (e) => { state.textY = parseInt(e.target.value); draw(); });
 
-    // Event Listeners - Rectangle
-    rectXRange.addEventListener('input', (e) => { state.rectOffsetX = parseInt(e.target.value); draw(); });
-    rectYRange.addEventListener('input', (e) => { state.rectOffsetY = parseInt(e.target.value); draw(); });
-    rectWRange.addEventListener('input', (e) => { state.rectOffsetWidth = parseInt(e.target.value); draw(); });
-    rectHRange.addEventListener('input', (e) => { state.rectOffsetHeight = parseInt(e.target.value); draw(); });
-
-    // Event Listeners - Image
+    // Events - Image
     imageUpload.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -637,31 +518,25 @@
             reader.readAsDataURL(file);
         }
     });
+
     zoomRange.addEventListener('input', (e) => { state.zoom = parseFloat(e.target.value); draw(); });
-    panXRange.addEventListener('input', (e) => { state.panX = parseInt(e.target.value); draw(); });
-    panYRange.addEventListener('input', (e) => { state.panY = parseInt(e.target.value); draw(); });
 
     // Download
     downloadBtn.addEventListener('click', () => {
-        if (!state.frameImg) {
-            alert("Frame not loaded.");
-            return;
-        }
-
+        if (!state.frameImg) { alert("Frame not loaded."); return; }
         try {
             const dataUrl = canvas.toDataURL('image/png');
             const link = document.createElement('a');
-            link.download = `eid-frame-${state.userName.replace(/[\r\n]/g, '-') || 'custom'}.png`;
+            link.download = `eid-frame-${state.userName.replace(/ /g, '_') || 'custom'}.png`;
             link.href = dataUrl;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         } catch (err) {
-            console.error(err);
             if(state.isLocalFile) {
-                alert("Download Failed.\n\nBecause you are opening this file directly from a folder, the browser blocks the download for security.\n\nSolution: Run a 'Local Server' (like VS Code Live Server).");
+                alert("Download Blocked.\nUse a Local Server (VS Code Live Server) to enable downloading.");
             } else {
-                alert("Download failed for an unknown reason.");
+                alert("Download failed.");
             }
         }
     });
