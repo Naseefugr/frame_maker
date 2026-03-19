@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Celebration Frame Maker</title>
+    <style>
+        :root {
+            --primary-color: #2E7D32;
+            --primary-light: #E8F5E9;
+            --text-dark: #1B1B1B;
+            --border-radius: 12px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --sidebar-width: 400px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* Security Warning Banner */
+        .security-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-bottom: 1px solid #ffeeba;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.85rem;
+            display: none; /* Hidden by default */
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            height: calc(100vh - 80px);
+        }
+
+        .editor-panel {
+            width: var(--sidebar-width);
+            background: white;
+            padding: 1.5rem;
+            overflow-y: auto;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .preview-panel {
+            flex: 1;
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            position: relative;
+            padding: 20px;
+        }
+
+        .control-section {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #fafafa;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            color: #444;
+            font-size: 0.85rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 2px;
+            background: white;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            width: 100%;
+            height: 80px;
+            border: 2px dashed #ccc;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: #fff;
+            text-align: center;
+            padding: 10px;
+            transition: 0.3s;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-text {
+            color: #666;
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .slider-group label {
+            width: 90px;
+            margin-bottom: 0;
+            font-weight: normal;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: auto;
+        }
+
+        .btn:hover {
+            background-color: #1B5E20;
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 95vh;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            background: white;
+        }
+
+        .placeholder-text {
+            position: absolute;
+            color: #888;
+            font-size: 1.2rem;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        @media (max-width: 900px) {
+            body { height: auto; overflow: auto; }
+            main { flex-direction: column-reverse; height: auto; }
+            .editor-panel { width: 100%; border-right: none; border-bottom: 1px solid #ddd; }
+            .preview-panel { min-height: 400px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="security-warning" id="securityWarning">
+    <strong>Notice:</strong> You are running this file directly. The "Download" button may be blocked by your browser. 
+    Please use a Local Server (e.g., VS Code Live Server) to enable downloading.
+</div>
+
+<header>
+    <h1>Frame Maker</h1>
+    <p class="subtitle">Loading frame from: img/frame.png</p>
+</header>
+
+<main>
+    <!-- LEFT: EDITOR -->
+    <section class="editor-panel">
+        
+        <!-- 1. Text Controls -->
+        <div class="control-section">
+            <div class="section-title">1. Name & Text</div>
+            <div class="form-group">
+                <label for="nameInput">Your Text</label>
+                <textarea id="nameInput" placeholder="Type your name here...&#10;Press Enter for new line."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="colorInput">Text Color</label>
+                <input type="color" id="colorInput" value="#000000">
+            </div>
+
+            <div class="form-group">
+                <label>Text Size</label>
+                <input type="range" id="textSizeRange" min="0.5" max="3" step="0.1" value="1">
+            </div>
+
+            <div class="form-group">
+                <label>Text Position (X / Y)</label>
+                <div class="slider-group">
+                    <label>Horizontal</label>
+                    <input type="range" id="textXRange" min="0" max="1000" value="400">
+                </div>
+                <div class="slider-group">
+                    <label>Vertical</label>
+                    <input type="range" id="textYRange" min="0" max="1500" value="350">
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Photo Box Controls -->
+        <div class="control-section">
+            <div class="section-title">2. Photo Box Settings</div>
+            
+            <div class="form-group">
+                <label>Position</label>
+                <div class="slider-group">
+                    <label>Left/Right</label>
+                    <input type="range" id="rectXRange" min="-300" max="300" value="0">
+                </div>
+                <div class="slider-group">
+                    <label>Up/Down</label>
+                    <input type="range" id="rectYRange" min="-300" max="300" value="0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Size</label>
+                <div class="slider-group">
+                    <label>Width</label>
+                    <input type="range" id="rectWRange" min="-100" max="200" value="0">
+                </div>
+                <div class="slider-group">
+                    <label>Height</label>
+                    <input type="range" id="rectHRange" min="-100" max="200" value="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Image Content Controls -->
+        <div class="control-section">
+            <div class="section-title">3. Photo Upload & Fit</div>
+            <div class="form-group">
+                <div class="file-upload-wrapper">
+                    <input type="file" id="imageUpload" accept="image/*">
+                    <div class="upload-text" id="uploadLabel">Click to Upload Photo</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Zoom Photo Inside Box</label>
+                <input type="range" id="zoomRange" min="0.1" max="5" step="0.1" value="1">
+            </div>
+            <div class="form-group">
+                <label>Move Photo Inside Box</label>
+                <div class="slider-group">
+                    <label>Pan X</label>
+                    <input type="range" id="panXRange" min="-400" max="400" step="5" value="0">
+                </div>
+                <div class="slider-group">
+                    <label>Pan Y</label>
+                    <input type="range" id="panYRange" min="-400" max="400" step="5" value="0">
+                </div>
+            </div>
+        </div>
+
+        <button id="downloadBtn" class="btn">Download Image</button>
+
+    </section>
+
+    <!-- RIGHT: PREVIEW -->
+    <section class="preview-panel">
+        <div id="placeholderText" class="placeholder-text">Loading Frame...</div>
+        <canvas id="canvas"></canvas>
+    </section>
+</main>
+
+<script>
+    // Configuration
+    const CONFIG = {
+        // This is the FIXED path to your local image
+        frameUrl: './img/frame.png',
+        baseWidth: 800, 
+        baseHeight: 1000,
+        photoArea: {
+            x: 50,   
+            y: 280,  
+            width: 320, 
+            height: 320 
+        },
+        textArea: {
+            fontSize: 36,
+            fontFamily: 'Arial, sans-serif',
+            defaultColor: '#000000',
+            defaultX: 400,
+            defaultY: 350
+        }
+    };
+
+    // State
+    const state = {
+        frameImg: null,
+        userImg: null,
+        userName: '',
+        textColor: '#000000',
+        textSize: 1,
+        textX: 400,
+        textY: 350,
+        rectOffsetX: 0,
+        rectOffsetY: 0,
+        rectOffsetWidth: 0,
+        rectOffsetHeight: 0,
+        zoom: 1,
+        panX: 0,
+        panY: 0,
+        scaleX: 1,
+        scaleY: 1,
+        isLocalFile: window.location.protocol === 'file:'
+    };
+
+    // DOM Elements
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const placeholderText = document.getElementById('placeholderText');
+    const securityWarning = document.getElementById('securityWarning');
+    
+    const nameInput = document.getElementById('nameInput');
+    const colorInput = document.getElementById('colorInput');
+    const textSizeRange = document.getElementById('textSizeRange');
+    const textXRange = document.getElementById('textXRange');
+    const textYRange = document.getElementById('textYRange');
+    
+    const rectXRange = document.getElementById('rectXRange');
+    const rectYRange = document.getElementById('rectYRange');
+    const rectWRange = document.getElementById('rectWRange');
+    const rectHRange = document.getElementById('rectHRange');
+    
+    const imageUpload = document.getElementById('imageUpload');
+    const uploadLabel = document.getElementById('uploadLabel');
+    const zoomRange = document.getElementById('zoomRange');
+    const panXRange = document.getElementById('panXRange');
+    const panYRange = document.getElementById('panYRange');
+    
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    // Initialization
+    function init() {
+        // Show warning if running from file
+        if (state.isLocalFile) {
+            securityWarning.style.display = 'block';
+        }
+
+        loadFrame();
+    }
+
+    function loadFrame() {
+        placeholderText.style.display = 'block';
+        placeholderText.innerText = "Loading img/frame.png...";
+        
+        const frame = new Image();
+        
+        // ONLY set crossOrigin if NOT on local file.
+        // If on local file, crossOrigin will break the loading, but download will fail anyway (browser rule).
+        if (!state.isLocalFile) {
+            frame.crossOrigin = "Anonymous";
+        }
+        
+        frame.src = CONFIG.frameUrl;
+        
+        frame.onload = () => {
+            state.frameImg = frame;
+            canvas.width = frame.width;
+            canvas.height = frame.height;
+            state.scaleX = frame.width / CONFIG.baseWidth;
+            state.scaleY = frame.height / CONFIG.baseHeight;
+
+            textXRange.max = frame.width;
+            textYRange.max = frame.height;
+            
+            textXRange.value = CONFIG.textArea.defaultX * state.scaleX;
+            textYRange.value = CONFIG.textArea.defaultY * state.scaleY;
+            state.textX = textXRange.value;
+            state.textY = textYRange.value;
+
+            placeholderText.style.display = 'none';
+            loadDefaultUserImage();
+        };
+
+        frame.onerror = () => {
+            placeholderText.innerText = "Error: Could not find 'img/frame.png'.\nCheck your folder structure.";
+            placeholderText.style.color = "red";
+        };
+    }
+
+    function loadDefaultUserImage() {
+        const img = new Image();
+        // Placeholder needs crossOrigin
+        img.crossOrigin = "Anonymous";
+        img.src = 'https://picsum.photos/seed/eid/400/400.jpg';
+        img.onload = () => {
+            state.userImg = img;
+            calculateAutoCover(img);
+            draw();
+        };
+        img.onerror = () => {
+            draw(); // Draw frame even if placeholder fails
+        }
+    }
+
+    function calculateAutoCover(img) {
+        const boxW = (CONFIG.photoArea.width + state.rectOffsetWidth) * state.scaleX;
+        const boxH = (CONFIG.photoArea.height + state.rectOffsetHeight) * state.scaleY;
+        const imgW = img.width;
+        const imgH = img.height;
+
+        const boxRatio = boxW / boxH;
+        const imgRatio = imgW / imgH;
+
+        let newZoom = 1;
+
+        if (imgRatio > boxRatio) {
+            newZoom = boxH / imgH;
+        } else {
+            newZoom = boxW / imgW;
+        }
+
+        state.zoom = newZoom;
+        zoomRange.value = newZoom;
+        state.panX = 0;
+        state.panY = 0;
+        panXRange.value = 0;
+        panYRange.value = 0;
+    }
+
+    function draw() {
+        if (!state.frameImg) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 1. Draw Frame
+        ctx.drawImage(state.frameImg, 0, 0, canvas.width, canvas.height);
+
+        // 2. Calculate Rectangle
+        const rectX = (CONFIG.photoArea.x + state.rectOffsetX) * state.scaleX;
+        const rectY = (CONFIG.photoArea.y + state.rectOffsetY) * state.scaleY;
+        const rectW = (CONFIG.photoArea.width + state.rectOffsetWidth) * state.scaleX;
+        const rectH = (CONFIG.photoArea.height + state.rectOffsetHeight) * state.scaleY;
+
+        // 3. Draw User Photo
+        if (state.userImg) {
+            ctx.save();
+            ctx.beginPath();
+            roundRect(ctx, rectX, rectY, rectW, rectH, 15 * state.scaleX); 
+            ctx.clip(); 
+
+            const imgAspect = state.userImg.width / state.userImg.height;
+            let drawW = rectW * state.zoom;
+            let drawH = drawW / imgAspect;
+
+            if (drawH < rectH * state.zoom) {
+                 drawH = rectH * state.zoom;
+                 drawW = drawH * imgAspect;
+            }
+
+            const centerX = rectX + (rectW / 2);
+            const centerY = rectY + (rectH / 2);
+            
+            const drawX = centerX - (drawW / 2) + state.panX;
+            const drawY = centerY - (drawH / 2) + state.panY;
+
+            ctx.drawImage(state.userImg, drawX, drawY, drawW, drawH);
+            ctx.restore();
+        }
+
+        // 4. Draw Text
+        if (state.userName) {
+            const baseFontSize = CONFIG.textArea.fontSize * state.scaleX;
+            const currentFontSize = baseFontSize * state.textSize;
+            
+            ctx.save();
+            ctx.font = `bold ${currentFontSize}px ${CONFIG.textArea.fontFamily}`;
+            ctx.fillStyle = state.textColor;
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            
+            ctx.shadowColor = "rgba(255,255,255,0.7)";
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 2 * state.scaleX;
+            ctx.shadowOffsetY = 2 * state.scaleX;
+
+            wrapText(ctx, state.userName, state.textX, state.textY, 400 * state.scaleX, currentFontSize * 1.2);
+            ctx.restore();
+        }
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+        if (w < 2 * r) r = w / 2;
+        if (h < 2 * r) r = h / 2;
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+    }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        const paragraphs = text.split('\n');
+        let currentY = y;
+        paragraphs.forEach(paragraph => {
+            const words = paragraph.split(' ');
+            let line = '';
+            for(let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + ' ';
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(line, x, currentY);
+                    line = words[n] + ' ';
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, x, currentY);
+            currentY += lineHeight;
+        });
+    }
+
+    // Event Listeners - Text
+    nameInput.addEventListener('input', (e) => { state.userName = e.target.value; draw(); });
+    colorInput.addEventListener('input', (e) => { state.textColor = e.target.value; draw(); });
+    textSizeRange.addEventListener('input', (e) => { state.textSize = parseFloat(e.target.value); draw(); });
+    textXRange.addEventListener('input', (e) => { state.textX = parseInt(e.target.value); draw(); });
+    textYRange.addEventListener('input', (e) => { state.textY = parseInt(e.target.value); draw(); });
+
+    // Event Listeners - Rectangle
+    rectXRange.addEventListener('input', (e) => { state.rectOffsetX = parseInt(e.target.value); draw(); });
+    rectYRange.addEventListener('input', (e) => { state.rectOffsetY = parseInt(e.target.value); draw(); });
+    rectWRange.addEventListener('input', (e) => { state.rectOffsetWidth = parseInt(e.target.value); draw(); });
+    rectHRange.addEventListener('input', (e) => { state.rectOffsetHeight = parseInt(e.target.value); draw(); });
+
+    // Event Listeners - Image
+    imageUpload.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    state.userImg = img;
+                    calculateAutoCover(img);
+                    uploadLabel.innerText = file.name;
+                    draw();
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    zoomRange.addEventListener('input', (e) => { state.zoom = parseFloat(e.target.value); draw(); });
+    panXRange.addEventListener('input', (e) => { state.panX = parseInt(e.target.value); draw(); });
+    panYRange.addEventListener('input', (e) => { state.panY = parseInt(e.target.value); draw(); });
+
+    // Download
+    downloadBtn.addEventListener('click', () => {
+        if (!state.frameImg) {
+            alert("Frame not loaded.");
+            return;
+        }
+
+        try {
+            const dataUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = `eid-frame-${state.userName.replace(/[\r\n]/g, '-') || 'custom'}.png`;
+            link.href = dataUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (err) {
+            console.error(err);
+            if(state.isLocalFile) {
+                alert("Download Failed.\n\nBecause you are opening this file directly from a folder, the browser blocks the download for security.\n\nSolution: Run a 'Local Server' (like VS Code Live Server).");
+            } else {
+                alert("Download failed for an unknown reason.");
+            }
+        }
+    });
+
+    window.addEventListener('load', init);
+
+</script>
+
+</body>
+</html>
