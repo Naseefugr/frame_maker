@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eid Celebration Frame Maker</title>
+    <title>Online Islamic School - Frame Maker</title>
     <style>
         :root {
-            --primary-color: #2E7D32;
+            /* Theme Colors matching the Frame */
+            --primary-color: #2E7D32; /* Islamic Green */
+            --primary-dark: #1B5E20;
             --primary-light: #E8F5E9;
-            --text-dark: #1B1B1B;
+            --text-dark: #121212; /* Default Text Color rgb(18,18,18) */
+            --bg-color: #f0f2f5;
             --border-radius: 12px;
             --shadow: 0 4px 20px rgba(0,0,0,0.1);
             --sidebar-width: 350px;
@@ -18,11 +21,12 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #f0f2f5;
+            background-color: var(--bg-color);
             color: var(--text-dark);
             height: 100vh;
             display: flex;
@@ -30,23 +34,26 @@
             overflow: hidden;
         }
 
+        /* Themed Header */
         header {
-            background: white;
+            background-color: var(--primary-color);
+            color: white;
             padding: 1rem;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 10;
             flex-shrink: 0;
         }
 
         h1 {
-            color: var(--primary-color);
+            color: white;
             font-size: 1.2rem;
             margin-bottom: 0.2rem;
+            white-space: nowrap;
         }
 
         p.subtitle {
-            color: #666;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.8rem;
         }
 
@@ -54,9 +61,9 @@
             background-color: #fff3cd;
             color: #856404;
             border-bottom: 1px solid #ffeeba;
-            padding: 10px;
+            padding: 5px;
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             display: none;
         }
 
@@ -64,7 +71,7 @@
             flex: 1;
             display: flex;
             overflow: hidden;
-            height: calc(100vh - 80px);
+            height: calc(100vh - 70px);
         }
 
         .editor-panel {
@@ -76,11 +83,12 @@
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+            -webkit-overflow-scrolling: touch; 
         }
 
         .preview-panel {
             flex: 1;
-            background-color: #e9ecef;
+            background-color: var(--primary-light);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -178,11 +186,11 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
         
         .slider-group label {
-            width: 70px;
+            width: 80px;
             margin-bottom: 0;
             font-weight: normal;
             font-size: 0.8rem;
@@ -192,6 +200,8 @@
         input[type="range"] {
             flex: 1;
             cursor: pointer;
+            height: 25px;
+            accent-color: var(--primary-color); 
         }
 
         .btn {
@@ -211,7 +221,7 @@
         }
 
         .btn:hover {
-            background-color: #1B5E20;
+            background-color: var(--primary-dark);
         }
 
         canvas {
@@ -220,6 +230,7 @@
             border-radius: 8px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
             background: white;
+            object-fit: contain;
         }
 
         .placeholder-text {
@@ -230,11 +241,29 @@
             pointer-events: none;
         }
 
-        @media (max-width: 900px) {
+        /* --- RESPONSIVE MOBILE STYLES --- */
+
+        @media (max-width: 900px) and (orientation: portrait) {
             body { height: auto; overflow: auto; }
-            main { flex-direction: column-reverse; height: auto; }
-            .editor-panel { width: 100%; border-right: none; border-bottom: 1px solid #ddd; }
-            .preview-panel { min-height: 400px; }
+            main { flex-direction: column-reverse; height: auto; display: block; }
+            .editor-panel { width: 100%; border-right: none; border-bottom: 1px solid #ddd; max-height: 50vh; }
+            .preview-panel { min-height: 50vh; padding: 10px; }
+            h1 { font-size: 1rem; }
+            header { padding: 0.8rem; }
+        }
+
+        @media (max-width: 900px) and (orientation: landscape) {
+            :root { --sidebar-width: 280px; }
+            body { height: 100vh; }
+            main { flex-direction: row; height: calc(100vh - 70px); }
+            .editor-panel { padding: 10px; gap: 10px; }
+            .preview-panel { padding: 10px; }
+            .control-section { padding: 0.8rem; }
+            .section-title { font-size: 0.8rem; margin-bottom: 0.5rem; }
+            h1 { font-size: 1rem; margin: 0; }
+            p.subtitle { font-size: 0.7rem; margin: 0; }
+            header { padding: 0.5rem; }
+            canvas { height: 90vh; width: auto; max-width: none; }
         }
     </style>
 </head>
@@ -244,9 +273,10 @@
     <strong>Notice:</strong> For the Download button to work, please run this file on a Local Server (e.g., VS Code Live Server).
 </div>
 
+<!-- Updated Header -->
 <header>
-    <h1>Frame Maker</h1>
-    <p class="subtitle">Simple Automatic Layout</p>
+    <h1>Zidnee</h1>
+    <p class="subtitle">Online Islamic School | Eid Celebration</p>
 </header>
 
 <main>
@@ -263,7 +293,7 @@
             
             <div class="form-group">
                 <label>Text Color</label>
-                <input type="color" id="colorInput" value="#2E7D32">
+                <input type="color" id="colorInput" value="#121212">
             </div>
 
             <div class="form-group">
@@ -271,7 +301,6 @@
                 <input type="range" id="textSizeRange" min="0.5" max="2" step="0.1" value="1">
             </div>
 
-            <!-- NEW: Text Vertical Position -->
             <div class="form-group">
                 <label>Text Position (Vertical)</label>
                 <div class="slider-group">
@@ -296,7 +325,6 @@
                 <input type="range" id="zoomRange" min="0.1" max="5" step="0.1" value="1">
             </div>
 
-            <!-- NEW: Photo Position (Pan) -->
             <div class="form-group">
                 <label>Position Photo Inside Box</label>
                 <div class="slider-group">
@@ -322,13 +350,13 @@
 </main>
 
 <script>
-    // Configuration: AUTOMATIC LAYOUT
+    // Configuration
     const CONFIG = {
         frameUrl: './img/frame.png',
+        logoUrl: './img/logo.png', // Path to your logo file
         baseWidth: 800, 
         baseHeight: 1000,
         
-        // Photo Box: FIXED on the LEFT
         photoArea: {
             x: 110,   
             y: 350,  
@@ -336,29 +364,32 @@
             height: 290 
         },
         
-        // Text Area: FIXED on the RIGHT
         textArea: {
             offsetX: 455, 
             offsetY: 508, 
             fontSize: 35,
             fontFamily: 'Arial, sans-serif',
-            defaultColor: '#2E7D32',
+            defaultColor: '#121212',
             maxWidth: 300
+        },
+        
+        // Logo Configuration
+        logoArea: {
+            width: 300, // Base width for scaling
+            offsetY: -80 // Position from bottom
         }
     };
 
     const state = {
         frameImg: null,
+        logoImg: null, // Store logo image
         userImg: null,
         userName: '',
         textColor: CONFIG.textArea.defaultColor,
         textSize: 1,
-        
-        // NEW STATE VARIABLES
         textOffsetY: 0,
         photoPanX: 0,
         photoPanY: 0,
-        
         zoom: 1,
         scaleX: 1,
         scaleY: 1,
@@ -375,50 +406,83 @@
     const nameInput = document.getElementById('nameInput');
     const colorInput = document.getElementById('colorInput');
     const textSizeRange = document.getElementById('textSizeRange');
-    const textYRange = document.getElementById('textYRange'); // New
+    const textYRange = document.getElementById('textYRange'); 
     
     const imageUpload = document.getElementById('imageUpload');
     const uploadLabel = document.getElementById('uploadLabel');
     const zoomRange = document.getElementById('zoomRange');
-    const photoXRange = document.getElementById('photoXRange'); // New
-    const photoYRange = document.getElementById('photoYRange'); // New
+    const photoXRange = document.getElementById('photoXRange'); 
+    const photoYRange = document.getElementById('photoYRange'); 
     
     const downloadBtn = document.getElementById('downloadBtn');
 
     function init() {
         if (state.isLocalFile) securityWarning.style.display = 'block';
-        loadFrame();
+        loadAssets();
     }
 
-    function loadFrame() {
+    function loadAssets() {
         placeholderText.style.display = 'block';
-        placeholderText.innerText = "Loading img/frame.png...";
+        placeholderText.innerText = "Loading Frame & Logo...";
         
+        // Load Frame
         const frame = new Image();
         if (!state.isLocalFile) frame.crossOrigin = "Anonymous";
         frame.src = CONFIG.frameUrl;
         
+        // Load Logo
+        const logo = new Image();
+        if (!state.isLocalFile) logo.crossOrigin = "Anonymous";
+        logo.src = CONFIG.logoUrl;
+
+        let loadedCount = 0;
+        const onAssetLoad = () => {
+            loadedCount++;
+            if(loadedCount === 2) { // Both loaded
+                setupCanvas();
+            }
+        };
+
         frame.onload = () => {
             state.frameImg = frame;
-            canvas.width = frame.width;
-            canvas.height = frame.height;
-            state.scaleX = frame.width / CONFIG.baseWidth;
-            state.scaleY = frame.height / CONFIG.baseHeight;
-
-            placeholderText.style.display = 'none';
-            loadDefaultUserImage();
+            onAssetLoad();
         };
 
-        frame.onerror = () => {
-            placeholderText.innerText = "Error: Could not find 'img/frame.png'.";
-            placeholderText.style.color = "red";
+        logo.onload = () => {
+            state.logoImg = logo;
+            onAssetLoad();
         };
+
+        // Handle errors gracefully
+        frame.onerror = () => { 
+            console.error("Frame failed"); 
+            // Try to continue anyway if logo loads
+            onAssetLoad();
+        };
+
+        logo.onerror = () => { 
+            console.error("Logo failed"); 
+            // Continue without logo if frame loads
+            onAssetLoad();
+        };
+    }
+
+    function setupCanvas() {
+        if (!state.frameImg) return;
+        
+        canvas.width = state.frameImg.width;
+        canvas.height = state.frameImg.height;
+        state.scaleX = state.frameImg.width / CONFIG.baseWidth;
+        state.scaleY = state.frameImg.height / CONFIG.baseHeight;
+
+        placeholderText.style.display = 'none';
+        loadDefaultUserImage();
     }
 
     function loadDefaultUserImage() {
         const img = new Image();
         img.crossOrigin = "Anonymous";
-        img.src = 'https://picsum.phot400.jpg';
+        img.src = 'https://picsum.photos/seed/eid/400/400.jpg';
         img.onload = () => {
             state.userImg = img;
             calculateAutoCover(img);
@@ -446,7 +510,6 @@
         state.zoom = newZoom;
         zoomRange.value = newZoom;
         
-        // Reset pan on new upload
         state.photoPanX = 0;
         state.photoPanY = 0;
         photoXRange.value = 0;
@@ -463,7 +526,7 @@
         // 1. Draw Frame Background
         ctx.drawImage(state.frameImg, 0, 0, canvas.width, canvas.height);
 
-        // 2. Draw User Photo (FIXED Position on Left)
+        // 2. Draw User Photo
         const rectX = CONFIG.photoArea.x * state.scaleX;
         const rectY = CONFIG.photoArea.y * state.scaleY;
         const rectW = CONFIG.photoArea.width * state.scaleX;
@@ -487,7 +550,6 @@
             const centerX = rectX + (rectW / 2);
             const centerY = rectY + (rectH / 2);
             
-            // UPDATED: Apply Pan (Scaled)
             const drawX = centerX - (drawW / 2) + (state.photoPanX * state.scaleX);
             const drawY = centerY - (drawH / 2) + (state.photoPanY * state.scaleX);
 
@@ -495,9 +557,8 @@
             ctx.restore();
         }
 
-        // 3. Draw Text (FIXED Position on Right)
+        // 3. Draw Text (User Name)
         if (state.userName) {
-            // UPDATED: Apply Text Y Offset
             const textX = CONFIG.textArea.offsetX * state.scaleX;
             const textY = (CONFIG.textArea.offsetY + state.textOffsetY) * state.scaleX;
             
@@ -512,13 +573,23 @@
             ctx.textAlign = 'left';
             ctx.textBaseline = 'top';
             
-            // White outline
             ctx.strokeStyle = "white";
             ctx.lineWidth = 4;
             
             wrapText(ctx, state.userName, textX, textY, maxWidth, lineHeight);
             
             ctx.restore();
+        }
+
+        // 4. Draw Fixed Logo (Zidnee Online Islamic School)
+        if (state.logoImg) {
+            const logoBaseWidth = CONFIG.logoArea.width * state.scaleX;
+            const logoBaseHeight = state.logoImg.height * (logoBaseWidth / state.logoImg.width);
+            
+            const logoX = (canvas.width - logoBaseWidth) / 2; // Center horizontally
+            const logoY = canvas.height + (CONFIG.logoArea.offsetY * state.scaleY) - logoBaseHeight;
+            
+            ctx.drawImage(state.logoImg, logoX, logoY, logoBaseWidth, logoBaseHeight);
         }
     }
 
@@ -566,7 +637,7 @@
     nameInput.addEventListener('input', (e) => { state.userName = e.target.value; draw(); });
     colorInput.addEventListener('input', (e) => { state.textColor = e.target.value; draw(); });
     textSizeRange.addEventListener('input', (e) => { state.textSize = parseFloat(e.target.value); draw(); });
-    textYRange.addEventListener('input', (e) => { state.textOffsetY = parseInt(e.target.value); draw(); }); // New
+    textYRange.addEventListener('input', (e) => { state.textOffsetY = parseInt(e.target.value); draw(); }); 
 
     // Events - Image
     imageUpload.addEventListener('change', (e) => {
@@ -587,8 +658,8 @@
         }
     });
     zoomRange.addEventListener('input', (e) => { state.zoom = parseFloat(e.target.value); draw(); });
-    photoXRange.addEventListener('input', (e) => { state.photoPanX = parseInt(e.target.value); draw(); }); // New
-    photoYRange.addEventListener('input', (e) => { state.photoPanY = parseInt(e.target.value); draw(); }); // New
+    photoXRange.addEventListener('input', (e) => { state.photoPanX = parseInt(e.target.value); draw(); }); 
+    photoYRange.addEventListener('input', (e) => { state.photoPanY = parseInt(e.target.value); draw(); }); 
 
     // Download
     downloadBtn.addEventListener('click', () => {
@@ -596,7 +667,7 @@
         try {
             const dataUrl = canvas.toDataURL('image/png');
             const link = document.createElement('a');
-            link.download = `eid-frame-${state.userName.replace(/[\r\n]/g, '_') || 'custom'}.png`;
+            link.download = `zidnee-frame-${state.userName.replace(/[\r\n]/g, '_') || 'custom'}.png`;
             link.href = dataUrl;
             document.body.appendChild(link);
             link.click();
